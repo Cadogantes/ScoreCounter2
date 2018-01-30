@@ -2,6 +2,7 @@ package com.example.android.scorecounter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,10 +24,12 @@ import static java.lang.Math.abs;
 
 public class MainActivity extends Activity {
     public int numberOfImages = 10;
-    public int activeImages = 0;
     TextView tvPearCount, tvBananaCount, tvStrawberryCount;
+
     public float[] dx = new float[numberOfImages];       //dx and dy indicate both value (in pixels) and direction in which particular image should be moved
     public float[] dy = new float[numberOfImages];       //they are arrays as those information need to be stored betweeen each animation frame. Every animated image needs its own set of dx and dy values
+    public Timer[] timers = new Timer[numberOfImages];
+
     RelativeLayout root;
     public float X, Y;
     int iPearCount, iBananaCount, iStrawberryCount;
@@ -50,6 +53,13 @@ public class MainActivity extends Activity {
         iStrawberryCount = 0;
         iBananaCount = 0;
 
+        root.post(new Runnable() {
+            public void run() {
+                Y = root.getHeight();
+                X = root.getWidth();
+            }
+        });
+
     }
 
     public void reset(View view) {
@@ -57,14 +67,8 @@ public class MainActivity extends Activity {
         iStrawberryCount = 0;
         iBananaCount = 0;
         actuateCounts();
-        createImageView(numberOfImages - activeImages);
-
-        Context context = getApplicationContext();
-        CharSequence text = "Reset!";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
+        root.removeAllViews();
+        createImageView(numberOfImages);
     }
 
     private void bounceAnimation(View view, int i) {
@@ -107,8 +111,7 @@ public class MainActivity extends Activity {
     }
 
     public void startAnimation(final View view, final int viewId) {
-        Timer t = new Timer();
-
+        Timer t= new Timer();
         t.scheduleAtFixedRate(
                 new TimerTask() {
                     public void run() {
@@ -128,22 +131,20 @@ public class MainActivity extends Activity {
     public void countPears(View view) {
         iPearCount++;
         actuateCounts();
-        activeImages--;
-        view.setVisibility(View.GONE);
+        killView(view);
+
     }
 
     public void countBananas(View view) {
         iBananaCount++;
         actuateCounts();
-        activeImages--;
-        view.setVisibility(View.GONE);
+        killView(view);
     }
 
     public void countStrawberries(View view) {
         iStrawberryCount++;
         actuateCounts();
-        activeImages--;
-        view.setVisibility(View.GONE);
+        killView(view);
     }
 
     public void createImageView(int nrOfImages) {
@@ -151,7 +152,7 @@ public class MainActivity extends Activity {
         int randomInt;
         for (int i = 0; i < nrOfImages; i++) {
             ImageView image = new ImageView(this);
-            activeImages++;
+            image.setId(i);
             randomInt = r.nextInt(100);
             //we have 3 types of fruits, new image will be assigned one of them randomly using result of %3
             if (randomInt % 3 == 0) {
@@ -188,5 +189,9 @@ public class MainActivity extends Activity {
             //start view animation
             startAnimation(image, i);
         }
+    }
+
+    public void killView(View view) {    //removes view from main screen
+        root.removeView(view);
     }
 }
