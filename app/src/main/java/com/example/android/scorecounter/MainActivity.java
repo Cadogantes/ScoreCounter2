@@ -183,7 +183,7 @@ public class MainActivity extends Activity {
                                 }
                             },
                             0,      // run first occurrence immediatetly
-                            40); // run every xx miliseconds
+                            20); // run every xx miliseconds. This parameter decides time between animation frames
                 }
             };
             thread.start();
