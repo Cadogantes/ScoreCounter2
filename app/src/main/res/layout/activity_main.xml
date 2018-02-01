@@ -10,6 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/deski"
         android:orientation="vertical">
 
         <LinearLayout
@@ -20,67 +21,72 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:src="@drawable/pear" />
 
             <TextView
                 android:id="@+id/pear_count"
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="x 0"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
                 android:textSize="24sp" />
 
             <ImageView
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:src="@drawable/banana" />
 
             <TextView
                 android:id="@+id/banana_count"
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="x 0"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
                 android:textSize="24sp" />
 
             <ImageView
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:src="@drawable/strawberry" />
 
             <TextView
                 android:id="@+id/strawberry_count"
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="x 0"
-                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
                 android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/reset"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:onClick="reset"
+                android:text="RESET" />
         </LinearLayout>
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/main"
+        <RelativeLayout
+            android:id="@+id/main_root"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/grass">
 
-            <ImageView
-                android:id="@+id/pear_1"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/pear" />
 
         </RelativeLayout>
     </LinearLayout>

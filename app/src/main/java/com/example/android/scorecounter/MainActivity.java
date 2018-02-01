@@ -23,7 +23,7 @@ import java.util.TimerTask;
 import static java.lang.Math.abs;
 
 public class MainActivity extends Activity {
-    public int numberOfImages = 10;
+    public int numberOfImages = 20;
     TextView tvPearCount, tvBananaCount, tvStrawberryCount;
 
     public float[] dx = new float[numberOfImages];       //dx and dy indicate both value (in pixels) and direction in which particular image should be moved
@@ -63,12 +63,7 @@ public class MainActivity extends Activity {
     }
 
     public void reset(View view) {
-        iPearCount = 0;
-        iStrawberryCount = 0;
-        iBananaCount = 0;
-        actuateCounts();
-        root.removeAllViews();
-        createImageView(numberOfImages);
+        this.recreate();
     }
 
     private void bounceAnimation(View view, int i) {
@@ -110,18 +105,6 @@ public class MainActivity extends Activity {
 
     }
 
-    public void startAnimation(final View view, final int viewId) {
-        Timer t= new Timer();
-        t.scheduleAtFixedRate(
-                new TimerTask() {
-                    public void run() {
-                        bounceAnimation(view, viewId);
-                    }
-                },
-                0,      // run first occurrence immediatetly
-                40); // run every xx miliseconds
-    }
-
     public void actuateCounts() {
         tvPearCount.setText("x " + iPearCount);
         tvBananaCount.setText("x " + iBananaCount);
@@ -150,8 +133,10 @@ public class MainActivity extends Activity {
     public void createImageView(int nrOfImages) {
         Random r = new Random();
         int randomInt;
-        for (int i = 0; i < nrOfImages; i++) {
-            ImageView image = new ImageView(this);
+        final Timer t = new Timer();    //this timer will handle calling next animation frames
+
+        for (int i = 0; i < nrOfImages; i++) {  //we create as much images as stated in nrOfImages input variable
+            final ImageView image = new ImageView(this);
             image.setId(i);
             randomInt = r.nextInt(100);
             //we have 3 types of fruits, new image will be assigned one of them randomly using result of %3
@@ -187,7 +172,21 @@ public class MainActivity extends Activity {
             root.addView(image);
 
             //start view animation
-            startAnimation(image, i);
+            final int finalI = i;
+            Thread thread = new Thread() {      //each animation will be handled by separate thread to lessen process load on main thread
+                @Override
+                public void run() {
+                    t.scheduleAtFixedRate(
+                            new TimerTask() {
+                                public void run() {
+                                    bounceAnimation(image, finalI);
+                                }
+                            },
+                            0,      // run first occurrence immediatetly
+                            40); // run every xx miliseconds
+                }
+            };
+            thread.start();
         }
     }
 
